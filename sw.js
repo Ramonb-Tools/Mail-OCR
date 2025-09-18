@@ -1,9 +1,10 @@
 const CACHE_NAME = 'ocr-camera-v1';
+const BASE = '/Mail-OCR/';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/sw.js',
+  BASE,
+  BASE + 'index.html',
+  BASE + 'manifest.webmanifest',
+  BASE + 'sw.js',
   'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'
 ];
 self.addEventListener('install', (e) => {
@@ -16,11 +17,11 @@ self.addEventListener('activate', (e) => {
 });
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  if (url.origin === location.origin) {
-    e.respondWith(
-      caches.match(e.request).then((cached) => cached || fetch(e.request))
-    );
+  // For same-origin requests under our BASE, try cache first
+  if (url.origin === location.origin && url.pathname.startsWith(BASE)) {
+    e.respondWith(caches.match(e.request).then((cached) => cached || fetch(e.request)));
   } else {
+    // Network-first for external resources (e.g., CDN)
     e.respondWith(
       fetch(e.request).then((res) => {
         const clone = res.clone();

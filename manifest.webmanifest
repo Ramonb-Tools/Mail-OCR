@@ -1,8 +1,8 @@
 {
   "name": "OCR Camera",
   "short_name": "OCR Camera",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/Mail-OCR/",
+  "scope": "/Mail-OCR/",
   "display": "standalone",
   "background_color": "#0b1020",
   "theme_color": "#0b1020",
